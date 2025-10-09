@@ -1,12 +1,17 @@
 fun main() {
-    
+
     val libre = Thread {
-        println("Libre empezado")
-        for (i in 1..5) {
-            println("Libre en ejecución $i")
-            Thread.sleep(1000)
+        try {
+            println("Libre empezado")
+            while (!Thread.currentThread().isInterrupted) {
+                for (i in 1..5) {
+                    println("Libre en ejecución $i")
+                    Thread.sleep(1000)
+                }
+            }
+        }catch (e: InterruptedException) {
+            println("Libre muerto de un tiro")
         }
-        println("Libre terminado")
     }
     val tortuga = Thread {
         println("Tortuga empezado")
@@ -19,6 +24,8 @@ fun main() {
     }
     libre.start()
     tortuga.start()
+    Thread.sleep(4000)
+    libre.interrupt()
     libre.join()
     tortuga.join()
     println("Carrera terminada")
