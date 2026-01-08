@@ -1,0 +1,4 @@
+package serverAndroid
+
+class Server {
+}
